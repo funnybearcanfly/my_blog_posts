@@ -1,0 +1,63 @@
+<p>上篇关于Java内存管理的文章主要是从程序执行的角度进行组织的，介绍了Java8及其之前版本的默认GC内存模型。而这次的文章将从程序性能及内存优化的角度入手，介绍将在Java9中被作为默认垃圾回收器的G1 Collector.</p>
+<br>
+<p><strong>1. 什么决定了我们对垃圾回收器的选取？</strong></p>
+<p>目前，Oracle的HotSpot Java虚拟机共提供了四种垃圾回收器：
+<br>a) Serial - 单线程回收器
+<br>b) Parallel - 多线程回收器
+<br>c) CMS (Concurrent Mark Sweep) - 并行回收器
+<br>d) G1 (Garbage First) - 垃圾优先回收器
+</p>
+<p>其中，第二种是目前HotSpot的默认垃圾回收器；前三种回收器共享一种内存模型，即在上篇文章中介绍的Eden/Survival/Old模型。它们三者的区别主要在于垃圾回收时的资源调度方式。而G1回收器则有自己独特的内存模型。在具体介绍G1回收器之前，我们先来看两张图。
+</p>
+<p>1.1 Throughput（吞吐量） vs Latency（延迟）
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/throughput-vs-latency.png"/>
+<br>Throughput 吞吐量是指一定时间窗口内，系统能执行的事务条数、数据库查询次数或能够响应的网络请求次数。简单的说，就是系统在一定时间内能完成的工作量大小。
+<br>Latency 延迟是指系统在任意时刻对客户请求进行响应的等待时间。即系统的反应速度。
+</p>
+<p>由上图可以看出，当系统到达一定规模时，吞吐量和延迟呈负相关的关系，我们必须要在两者之间做出选择和平衡。而目前企业的对外及对内系统，大多是网络应用，这就对系统延迟提出了较高的需求。对于公司的对外系统，系统延迟更是影响用户体验的首要因素。百毫秒级的延迟就足以对业务绩效产生影响。
+</p>
+<p>从延迟角度出发，Serial和Parallel回收器都是中断型回收器，即它们在进行垃圾回收的整个过程中，都需要挂起所有正在执行的程序线程。而根据统计，对1G大小的内存进行回收，需要约1秒钟。如果程序配置的内存在2G及以上，我们就会频繁的遇到2秒及以上的垃圾回收延迟，这还不包括程序本身处理逻辑的耗时。所以Serial和Parallel回收器不符合我们对低延迟的需求。
+</p>
+<p>1.2 Java Memory Wall（内存上限）
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/java-memory-wall.png"/>
+<br>从上图可以看出，在Java发展的过程中，虚拟机内存大小持续增长。但发展到2-4G大小时，却遇到瓶颈。这和之前说的Serial、Parallel内存处理方式有关：虚拟机内存增大时，垃圾回收需要消耗的时间和资源也随之增长，让Java程序的性能无法随虚拟机内存的继续增大而提高。因为Serial、Parallel和CMS在进行垃圾回收时都是把整个堆作为回收单位，堆越大越难回收。
+</p>
+<p>CMS回收器是一种并行回收器，它只会短暂挂起程序线程，然后与程序线程并行地进行垃圾回收。但它最大的问题是：受限于固定划分的内存模型，为了并行性，省去了内存移动的步骤，无法处理内存碎片化的问题。这对于需要长时间运行的服务器程序来说，是很不利的。
+</p>
+<p>为了让Java程序能充分利用多核处理器的性能以及日益增大的内存空间，提供稳定的低延迟服务。Oracle引入了G1回收器。</p>
+<p><strong>2. G1内存模型及回收过程</strong></p>
+<p>2.1 G1内存模型
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/Generations.png"/>
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1Regions.png"/>
+<br>图一是传统的代际内存模型，图二是G1回收器的内存模型。</p>
+<p>传统的代际内存模型把堆分为三部分，各自大小固定。进行minor collection时，会处理Eden和Survival部分；进行major collection时，会处理整个堆。这就导致了垃圾回收的成本随堆的变大而增加。</p>
+<p>G1回收器同样定义有Eden、Survival和Old. 但它们在堆上的大小和位置并不固定。G1根据设定，把堆分成大小相同的小块（默认大小为2M），每个小块属于Eden/Survival/Old中的一种，存放相应的对象。进行垃圾回收时，不是对整个堆进行处理，而是先对垃圾占比较高的块进行处理。对块进行回收的耗时会被记录下来，用来估计接下来的回收耗时。所以对于G1回收器，我们可以指定最高延迟时间（-XX:MaxGCPauseMillis）。回收器会针对这个时间决定要回收的块个数。又因为回收耗时无法完全准确估计，而且当内存剩余空间有限时，回收块数必须增加，所以这个时限只是一个大概的时间范围。G1把内存回收的单位由堆变成了块，便于按需进行并行回收、在回收过程中直接完成碎片处理。它对大堆的处理就要明显优于其他三种回收器。
+</p>
+<p>2.2 G1回收过程
+<br>接下来简述G1回收的过程
+</p>
+<p>首先把内存划分为小块，每块中存放相应对象
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1-step1.png"/></p>
+<p>进行年轻代回收时，把相应块中的存活数据移动到其他空闲块中或提升到Old块中。这既删除了无效数据，又避免了内存碎片化。这步操作需要挂起程序线程。
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1-step2.png"/></p>
+<p>进行年老代回收时，先要借助在年轻代回收时打上的对象存活标记，来并行地找出堆上所有的存活对象。所含对象全部失效的块，可以立即被清空。
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1-step3.png"/></p>
+<p>根据标记结果，对象存活率低的块进行回收。把它们当中的存活对象移动到空闲块中。这步会对年轻代和年老代同时进行操作。
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1-step4.png"/></p>
+<p>回收之后的堆，如下图所示
+<br><img class="pure-img" src="https://tanyixiong.com/assets/post4-Java-Memory-2/G1-step5.png"/></p>
+<p><strong>3. G1回收器参数</strong></p>
+<p>根据上面的介绍，我们不难想到，由于内存模型的差别，G1回收器的参数必然和其他三种回收器的参数有差别。其中最主要的几个参数如下：
+</p>
+<p>&nbsp;&nbsp;&nbsp;-XX:G1HeapRegionSize=n 块的大小</p>
+<p>&nbsp;&nbsp;&nbsp;-XX:MaxGCPauseMillis=200 垃圾回收最长延迟时间（非强制）</p>
+<p>&nbsp;&nbsp;&nbsp;-XX:G1NewSizePercent=5 堆上年轻代所占大小的最小比例</p>
+<p>&nbsp;&nbsp;&nbsp;-XX:G1MaxNewSizePercent=60 堆上年轻代所占大小的最大比例</p>
+<p>&nbsp;&nbsp;&nbsp;-XX:InitiatingHeapOccupancyPercent=45 触发垃圾回收的堆使用比例</p>
+
+<p><strong>参考：</strong></p>
+<p><a href="https://www.javaworld.com/article/2078623/core-java/jvm-performance-optimization-part-1-a-jvm-technology-primer.html">https://www.javaworld.com/article/2078623/core-java/jvm-performance-optimization-part-1-a-jvm-technology-primer.html</a>
+<br><a href="http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html">http://www.oracle.com/technetwork/tutorials/tutorials-1876574.html</a>
+<br><a href="http://www.oracle.com/technetwork/articles/java/g1gc-1984535.html">http://www.oracle.com/technetwork/articles/java/g1gc-1984535.html</a>
+<br><a href="https://www.dynatrace.com/blog/understanding-g1-garbage-collector-java-9/">https://www.dynatrace.com/blog/understanding-g1-garbage-collector-java-9/</a>
+</p>
