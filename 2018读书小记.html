@@ -1,0 +1,21 @@
+<p><strong>2017年1月</strong></p>
+<p>《Java 8 in Action》&nbsp;<a href="https://www.manning.com/books/java-8-in-action" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>众所周知，Lambda表达式是Java 8中最重要的新特性之一。但大多数资料只是直接给出结论，告诉我们怎么使用Lambda表达式，却没有解释为什么我们需要Lambda表达式。</p>
+<p>作者从行为的参数化说起，介绍了Lambda表达式所带来的灵活性以及由此催生的新的程序设计思路。以Lambda表达式为基础，引出了Java 8的另一重要特性：Stream.</p>
+<p>Stream类似于C#中的Linq，都是通过向默认的集合操作中注入业务代码，来链式地操作数据集合。这种实现方式有助于封装集合遍历的具体实现，为操作内联等遍历优化提供了基础。基于这种封装，Stream还提供了并行数据处理能力，有助于性能优化。</p>
+<p>其他的新特性包括：Interface默认方法、Optional类、CompletableFuture、java.time.*命名空间下提供的新的日期类型（LocalDate, LocalTime, Instant, Duration, Period等）。</p>
+<p>我把书中新特性的示例代码整理在了一起。<a href="https://github.com/funnybearcanfly/java8_main_features_example" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><br></p>
+<p><strong>2017年2月</strong></p>
+<p>《Head First Design Patterns》&nbsp;<a href="https://book.douban.com/subject/1400656/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>这本书在ThoughtWorks的<a href="https://www.tanyixiong.com/assets/ThoughtWorksReadingRadar.jpg" target="_blank" style="background-color: transparent;">读书雷达</a>中处于最核心的位置。之前总担心因为它是Head First系列的，所以会不会内容太肤浅，但读过之后觉得非常惊喜。我甚至觉得，有了一定编码经验的人看这本书，反而会收获更大。</p>
+<p>它不像其他关于设计模式的书籍，直接把经典的设计模式填鸭式地塞给读者。而是以模拟情景为基础，循序渐进的引导读者建立起设计模式思维，同时给出经典模式解决相应问题时的好处。它在介绍模式的同时，还强调OO设计的基本原则，可以说是授人以渔。</p>
+<p>这里简要列出经典模式的分类，以供记忆。</p>
+<p>创建型：Singleton, Builder, Prototype, Abstract Factory, Factory Method
+<br/>行为型：Template Method, Visitor, Mediator, Iterator, Command, Memento, Interpreter, Observer, Chain of Responsibility, State, Strategy
+<br/>结构型：Decorator, Proxy, Composite, Facade, Flyweight, Bridge, Adapter</p>
+<p>《Java NIO》&nbsp;<a href="https://book.douban.com/subject/1433583/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>对于后端应用，特别是服务应用来说，IO部分永远是最需要谨慎处理的，因为它直接关系到应用的相应速度和吞吐量。而对于Java程序员来说，NIO就成了一项必备技能。</p>
+<p>这本书虽然是2002年出版的，但其中关于系统IO和Java NIO的介绍仍然十分有效，因为操作系统层面的IO并没有翻天覆地的变化。虽然Java 7引入了AIO，但在Linux平台上，AIO仍是由epoll实现，所以跟NIO相比并没有显著的性能提升。从编程模式上看，AIO也基本沿袭了NIO的风格。综合以上几个原因，本书没有推出新版也就情有可原了。</p>
+<p>NIO的三板斧：Buffer, Channel, Selector.</p>
+<p><br></p>
