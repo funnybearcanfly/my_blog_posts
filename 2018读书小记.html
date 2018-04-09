@@ -19,3 +19,48 @@
 <p>这本书虽然是2002年出版的，但其中关于系统IO和Java NIO的介绍仍然十分有效，因为操作系统层面的IO并没有翻天覆地的变化。虽然Java 7引入了AIO，但在Linux平台上，AIO仍是由epoll实现，所以跟NIO相比并没有显著的性能提升。从编程模式上看，AIO也基本沿袭了NIO的风格。综合以上几个原因，本书没有推出新版也就情有可原了。</p>
 <p>NIO的三板斧：Buffer, Channel, Selector.</p>
 <p><br></p>
+<p><strong>2017年3月</strong></p>
+<p>《Netty in Action》&nbsp;<a href="https://book.douban.com/subject/24700704/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>讲到Java NIO相关的框架，Netty是绝对绕不开的。Netty在Java NIO的基础上实现了异步的事件驱动处理。</p>
+<p>Netty大致的结构如下：Bootstrap -> EventGroup(parent, child) -> EventLoop -> Channel -> ChannelPipeline -> ChannelHandlerContext -> ChannelHandler</p>
+<p>其中最有意思的是以下两个部分
+<br/>1）基于EventGroup和EventLoop实现的Reactor线程模型（可以根据配置实现单线程、多线程和主从线程模式）
+EventGroup可以类比为线程池，它把任务分配给EventLoop。Parent EventGroup用来接受连接，Child EventGroup用来对已接受的连接进行读写；
+EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可以用来异步执行任务。一个EventGroup包含多个EventLoop，一个EventLoop可以处理多个Channe。
+所以Netty高效的原因不仅在于IO复用，还在于多线程的使用和线程复用。
+<br/>2）基于ChannelPipeline和ChannelHandler实现的数据分层处理。对网络数据进行管道式的处理，有效降低了处理不同协议的复杂度。例如，我们要实现HTTPS传输时，只需要按顺序向管道里添加TLS对应的Handler和HTTP对应的Handler，然后HTTPS的握手过程就可以顺利完成；再如，我们要实现WebScoket传输时，只需要先添加HTTP Handler和WebSocket Handler，收到WebSocket握手后，把HTTP Handler从管道中移除，即可实现传输协议的动态变化。
+补充：阻塞非阻塞是对调用者而言，同步异步是对IO操作而言。Reactor模式是非阻塞同步，Proactor模式是非阻塞异步。</p>
+<p>《Java Persistence with Hibernate》&nbsp;<a href="https://book.douban.com/subject/24830009/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>这本书非常有助于厘清JPA和Hibernate的关系、以及了解Hibernate的核心功能。</p>
+<p>JPA是Java EE中关于实体存储的规范。它的主要接口是EntityManagerFactory, EntityManager, Entity, Criteria等；Hibernate是对JPA的实现，是JPA provider。</p>
+<p>如果我们只需要使用JPA提供的接口，我们可以将Hibernate配置到Persistence Unit中，然后用EntityManagerFactory直接取得EntityManager做数据操作。这里的EntityManager实例将会是Hibernate中的Session对象，但这对我们的代码是透明的。理论上我们可以使用其他的JPA provider而不需要修改程序代码。</p>
+<p>在JPA规范之外，Hibernate还通过它特有的接口提供了额外的配置选项和数据操作方法。所以在实际项目中，我们最终难免对JPA prodiver的特殊接口形成依赖。</p>
+<p>要了解一个工具，最好的办法是看它要解决什么问题，或者想一想，没有它会怎样。Hibernate作为一个ORM框架，要解决的核心问题就是对象到关系的映射。之所以需要这样的映射，是因为在JVM中，结构化数据的存储主要是靠对象，而在关系型数据库中，数据的存储主要是靠表和行。这两者之间有几个最主要的区别:
+<br/>1）Java对象的粒度更丰富，我们可以自定义对象；而关系型数据库通常只支持关系和默认数据类型；
+<br/>2）Java对象支持继承和多态；关系型数据库中很难直接支持；
+<br/>3）Java对象有引用比较和值；关系型数据库中通常是主键比较；
+<br/>4）Java对象之间有一对多、多对一和多对多的关联关系；关系型数据库中只有主外建关联；
+<br/>5）Java用引用访问对象，可以遍历或随机访问；关系型数据库只能按条件查询。</p>
+<p>为了解决这几个问题，Hibernate提供了
+<br/>1）Entity type（有独立的生命周期）和Value Type（没有独立的生命周期，如@Embedded和@Enumerated）；
+<br/>2）多种继承映射策略（@MappedSupperClass，@Inheritance）：一个具体子类一张表、所有类共用一张表、每个父子类一张表；
+<br/>3）两种集合：@ElementCollection用于embedded type集合，@ManyToOne和@OneToMany用于entity type集合；
+<br/>4）数据状态管理：Transient state/Persistent state/Removed state/Detached state；
+<br/>5）Fetch plan：Lazy/Eager；Fetch strategy：BatchSize/Subselect/Select；
+<br/>6）两级缓存：Persistence context/Shared cache；
+<br/>7）两种并发控制：乐观（给Entity添加版本控制）、悲观（读写锁）；
+<br/>8）四种事务级别：Read uncommitted/Read committed/Repeatable read/Serialization；
+<br/>总结来说，我们需要关心的，是如何有效地用对象方式访问和存储数据。我们不是要摒弃SQL而是要高效地生成合理的SQL。从而避免n-select、笛卡尔积等问题。
+</p>
+<p>《Java Message Service》&nbsp;<a href="https://book.douban.com/subject/1830350/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p>JMS是Java EE中的另一个重要规范，用于消息的处理。这本书着重于介绍JMS本身提供的功能，而没有涉及具体JMS provider的实现。</p>
+<p>JMS的大致结构如下：ConnectionFactory -> Connection -> Session -> Message/Message Producer/Message Consumer <- Destination
+<br/>其中Session是事务控制的单位，而在JDBC中，Connection是事务控制的单位。所以对JMS可以用session pool，对JDBC可以用connection pool.
+</p>
+<p>JSM支持两种消息模式：
+<br/>1）One to one. 基于Queue, 有Sync和Async两种；
+<br/>2）One to many. 基于Topic, 有Durable和Non-Durable两种。
+<br/>对于这两种模式的消息，都可以指定Persistent或Non-Persistent。消息本身有三个部分：Header, Properties(message selector就是针对它), Payload(不同的消息类型，差别就在于它)。
+</p>
+<p>对于消息收发，我们重点需要注意的是存储转发机制。即消息在JMS服务器上会驻留多久、它是被存在内存还是硬盘。这跟我们选择的消息模式有关。对消息收发的性能和吞吐量会造成影响。</p>
+<p><br></p>
