@@ -1,26 +1,27 @@
-<p><strong>2017年1月</strong></p>
-<p>《Java 8 in Action》&nbsp;<a href="https://www.manning.com/books/java-8-in-action" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><strong>2018年1月</strong></p>
+<p><a href="https://www.manning.com/books/java-8-in-action" target="_blank" style="background-color: transparent;">《Java 8 in Action》</a></p>
 <p>众所周知，Lambda表达式是Java 8中最重要的新特性之一。但大多数资料只是直接给出结论，告诉我们怎么使用Lambda表达式，却没有解释为什么我们需要Lambda表达式。</p>
 <p>作者从行为的参数化说起，介绍了Lambda表达式所带来的灵活性以及由此催生的新的程序设计思路。以Lambda表达式为基础，引出了Java 8的另一重要特性：Stream.</p>
 <p>Stream类似于C#中的Linq，都是通过向默认的集合操作中注入业务代码，来链式地操作数据集合。这种实现方式有助于封装集合遍历的具体实现，为操作内联等遍历优化提供了基础。基于这种封装，Stream还提供了并行数据处理能力，有助于性能优化。</p>
 <p>其他的新特性包括：Interface默认方法、Optional类、CompletableFuture、java.time.*命名空间下提供的新的日期类型（LocalDate, LocalTime, Instant, Duration, Period等）。</p>
 <p>我把书中新特性的示例代码整理在了一起。<a href="https://github.com/funnybearcanfly/java8_main_features_example" target="_blank" style="background-color: transparent;">链接</a></p>
 <p><br></p>
-<p><strong>2017年2月</strong></p>
-<p>《Head First Design Patterns》&nbsp;<a href="https://book.douban.com/subject/1400656/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><strong>2018年2月</strong></p>
+<p><a href="https://book.douban.com/subject/1400656/" target="_blank" style="background-color: transparent;">《Head First Design Patterns》</a></p>
 <p>这本书在ThoughtWorks的<a href="https://www.tanyixiong.com/assets/ThoughtWorksReadingRadar.jpg" target="_blank" style="background-color: transparent;">读书雷达</a>中处于最核心的位置。之前总担心因为它是Head First系列的，所以会不会内容太肤浅，但读过之后觉得非常惊喜。我甚至觉得，有了一定编码经验的人看这本书，反而会收获更大。</p>
 <p>它不像其他关于设计模式的书籍，直接把经典的设计模式填鸭式地塞给读者。而是以模拟情景为基础，循序渐进的引导读者建立起设计模式思维，同时给出经典模式解决相应问题时的好处。它在介绍模式的同时，还强调OO设计的基本原则，可以说是授人以渔。</p>
 <p>这里简要列出经典模式的分类，以供记忆。</p>
 <p>创建型：Singleton, Builder, Prototype, Abstract Factory, Factory Method
 <br/>行为型：Template Method, Visitor, Mediator, Iterator, Command, Memento, Interpreter, Observer, Chain of Responsibility, State, Strategy
 <br/>结构型：Decorator, Proxy, Composite, Facade, Flyweight, Bridge, Adapter</p>
-<p>《Java NIO》&nbsp;<a href="https://book.douban.com/subject/1433583/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><br></p>
+<p><a href="https://book.douban.com/subject/1433583/" target="_blank" style="background-color: transparent;">《Java NIO》</a></p>
 <p>对于后端应用，特别是服务应用来说，IO部分永远是最需要谨慎处理的，因为它直接关系到应用的相应速度和吞吐量。而对于Java程序员来说，NIO就成了一项必备技能。</p>
 <p>这本书虽然是2002年出版的，但其中关于系统IO和Java NIO的介绍仍然十分有效，因为操作系统层面的IO并没有翻天覆地的变化。虽然Java 7引入了AIO，但在Linux平台上，AIO仍是由epoll实现，所以跟NIO相比并没有显著的性能提升。从编程模式上看，AIO也基本沿袭了NIO的风格。综合以上几个原因，本书没有推出新版也就情有可原了。</p>
 <p>NIO的三板斧：Buffer, Channel, Selector.</p>
 <p><br></p>
-<p><strong>2017年3月</strong></p>
-<p>《Netty in Action》&nbsp;<a href="https://book.douban.com/subject/24700704/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><strong>2018年3月</strong></p>
+<p><a href="https://book.douban.com/subject/24700704/" target="_blank" style="background-color: transparent;">《Netty in Action》</a></p>
 <p>讲到Java NIO相关的框架，Netty是绝对绕不开的。Netty在Java NIO的基础上实现了异步的事件驱动处理。</p>
 <p>Netty大致的结构如下：Bootstrap -> EventGroup(parent, child) -> EventLoop -> Channel -> ChannelPipeline -> ChannelHandlerContext -> ChannelHandler</p>
 <p>其中最有意思的是以下两个部分
@@ -30,7 +31,8 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 所以Netty高效的原因不仅在于IO复用，还在于多线程的使用和线程复用。
 <br/>2）基于ChannelPipeline和ChannelHandler实现的数据分层处理。对网络数据进行管道式的处理，有效降低了处理不同协议的复杂度。例如，我们要实现HTTPS传输时，只需要按顺序向管道里添加TLS对应的Handler和HTTP对应的Handler，然后HTTPS的握手过程就可以顺利完成；再如，我们要实现WebScoket传输时，只需要先添加HTTP Handler和WebSocket Handler，收到WebSocket握手后，把HTTP Handler从管道中移除，即可实现传输协议的动态变化。
 补充：阻塞非阻塞是对调用者而言，同步异步是对IO操作而言。Reactor模式是非阻塞同步，Proactor模式是非阻塞异步。</p>
-<p>《Java Persistence with Hibernate》&nbsp;<a href="https://book.douban.com/subject/24830009/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><br></p>
+<p><a href="https://book.douban.com/subject/24830009/" target="_blank" style="background-color: transparent;">《Java Persistence with Hibernate》</a></p>
 <p>这本书非常有助于厘清JPA和Hibernate的关系、以及了解Hibernate的核心功能。</p>
 <p>JPA是Java EE中关于实体存储的规范。它的主要接口是EntityManagerFactory, EntityManager, Entity, Criteria等；Hibernate是对JPA的实现，是JPA provider。</p>
 <p>如果我们只需要使用JPA提供的接口，我们可以将Hibernate配置到Persistence Unit中，然后用EntityManagerFactory直接取得EntityManager做数据操作。这里的EntityManager实例将会是Hibernate中的Session对象，但这对我们的代码是透明的。理论上我们可以使用其他的JPA provider而不需要修改程序代码。</p>
@@ -52,7 +54,8 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 <br/>8）四种事务级别：Read uncommitted/Read committed/Repeatable read/Serialization；
 <br/>总结来说，我们需要关心的，是如何有效地用对象方式访问和存储数据。我们不是要摒弃SQL而是要高效地生成合理的SQL。从而避免n-select、笛卡尔积等问题。
 </p>
-<p>《Java Message Service》&nbsp;<a href="https://book.douban.com/subject/1830350/" target="_blank" style="background-color: transparent;">链接</a></p>
+<p><br></p>
+<p><a href="https://book.douban.com/subject/1830350/" target="_blank" style="background-color: transparent;">《Java Message Service》</a></p>
 <p>JMS是Java EE中的另一个重要规范，用于消息的处理。这本书着重于介绍JMS本身提供的功能，而没有涉及具体JMS provider的实现。</p>
 <p>JMS的大致结构如下：ConnectionFactory -> Connection -> Session -> Message/Message Producer/Message Consumer <- Destination
 <br/>其中Session是事务控制的单位，而在JDBC中，Connection是事务控制的单位。所以对JMS可以用session pool，对JDBC可以用connection pool.
@@ -64,3 +67,13 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 </p>
 <p>对于消息收发，我们重点需要注意的是存储转发机制。即消息在JMS服务器上会驻留多久、它是被存在内存还是硬盘。这跟我们选择的消息模式有关。对消息收发的性能和吞吐量会造成影响。</p>
 <p><br></p>
+<p><strong>2018年4月</strong></p>
+<p><a href="https://book.douban.com/subject/3897837/" target="_blank" style="background-color: transparent;">《Spring揭秘》</a></p>
+<p>这本书对Spring核心框架的实现原理做了详细的介绍。如今Spring已经发展成了一个庞大的项目集合，但其中核心的IOC容器和AOP组件还是保持了原有的结构。所以虽然本书自2009年出版后就没有再版，但对于了解Spring的核心工作原理，其中的知识还是有效的。</p>
+<p>作者从Bean, IOC, AOP到JDBC, ORM, MVC逐层娓娓道来。其中最有价值的部分，我认为是对IOC容器生命周期，以及AOP实现原理的剖析。</p>
+<p>在SpringBoot十分流行、开发和配置都变得十分简单的情况下，了解Spring核心的工作原理就变得更有必要了。因为我认为，SpringBoot与Spring最大的区别，在于程序类加载器的所有者不同。Spring是被容器或默认的JVM类加载器所使用的拓展框架；而SpringBoot则是利用自有的类加载器，对Spring的核心模块以及其他内嵌容器或模块进行加载。后者可以作为独立的、闭包的程序单位运行，自治性更强。</p>
+<p><br></p>
+<p><a href="https://book.douban.com/subject/1888733/" target="_blank" style="background-color: transparent;">《Java Concurrency in Practice》</a></p>
+<p>并发编程一直是颇具挑战性的问题，在读这本书之前，我觉得里面的内容一定很晦涩难懂。但出乎意料的是，这本书读起来趣味性很强，深入浅出的介绍了并发编程中可能遇到的问题，和相应的思考方式。</p>
+<p>操作的原子性、排他性和可见性，是进行并发编程时需要考虑的三要素。根据这三要素，可以选择用volatile、同步关键字、ReentrantLock、原子操作类、调度器、条件队列、线程池等手段，来解决并发问题。</p>
+<p>另一个非常重要的启示，是让我重新认识了生产者-消费者模式。在Java的并发类、Netty和Tomcat的IO调度类中，随处可见“队列”的身影，而通常见到队列，就可以联想到生产者-消费者模式。“队列”就像是一个变速箱，让处理速度不同的两个并发单元，能同时运行，从而达到最大化利用系统资源、提高程序响应速度和吞吐量的目的。这个思路可以用来帮助理解很多涉及任务调用和并发任务处理的模块。</p>
