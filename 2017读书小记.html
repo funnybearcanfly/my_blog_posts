@@ -57,23 +57,43 @@
     Networks.</p>
 <p><br></p>
 <p><a href="http://guidetodatamining.com/" target="_blank">《A programmer‘s Guide to Data Mining》</a></p>
-<p>这是一本关于数据挖掘的网络书，英文版写得很生动。深入浅出的介绍了：</p>
-<p>1.距离测度：曼哈顿距离、欧式距离、闵氏距离、皮尔逊相似度、余弦相似度。</p>
-<p>2.物品推荐</p>
-<p>&nbsp;2.1 协同过滤（Collaborative Filtering）：将评分正规化，可以把预测出的分数，转化为用户对物品感兴趣的可能性。这种过滤方式对新加入的物品不太友好，因为协同过滤的基础是用户对物品的评价。 </p>
-<p>&nbsp;&nbsp;2.1.1 基于用户的协同过滤（User-based Filtering）：算出用户间的相似度，然后根据相似用户对物品的评价，算出目标用户对物品的可能评价。</p>
-<p>&nbsp;&nbsp;2.1.2 基于物品的协同过滤（Item-based Filtering）：</p>
-<p>&nbsp;&nbsp;&nbsp;1）算出物品间的相似度，然后根据用户对其他物品的评价，加权平均算出对物品的可能评价。</p>
-<p>&nbsp;&nbsp;&nbsp;2）Weighted Slope-One算法，算出物品间评分的差异值，从用户评价过的物品出发，加权平均算出用户对物品的可能评价。优点：物品间的评分差异可以增量计算。</p>
-<p>&nbsp;2.2 基于物品特征的过滤（Content-based Filtering）：这种过滤能克服协同过滤的“流行偏见(popular bias)”。</p>
-<p>&nbsp;&nbsp;2.2.1 首先要解决的是属性表示的问题。对于离散变量，可以用add-one方法对特征向量进行增维处理。对连续变量，如果数值范围很大，那就需要进行正规化处理（Normalization/Standardization），用到如，Standard
-    Score或Modified Standard Score.</p>
-<p>&nbsp;&nbsp;2.2.2 距离测度：可以将几种常规的测度放到n维加以计算。</p>
-<p>3.分类</p>
-<p>&nbsp;3.1 Lazy learner：最近临分类器/n近邻分类器。</p>
-<p>&nbsp;3.2 Eager learner：贝叶斯分类器。对于连续变量的处理，可以划分数值范围或用高斯分布概率密度。</p>
-<p>&nbsp;3.3 分类器效果衡量：如，Kappa Statistic</p>
-<p>4.聚类</p>
-<p>&nbsp;4.1 两类聚类方法：KNN/KNN++ 或 层次型聚类（Hierarchy clustering）。</p>
-<p>&nbsp;4.2 聚类簇之间距离的选取策略：Single-linkage, Complete-linkage以及Average-linkage。</p>
-<p>&nbsp;4.3 聚类效果衡量：SSE，即各点到其聚类中心的距离平方和。</p>
+<p>这是一本关于数据挖掘的网络书，英文版写得很生动。深入浅出的介绍了：
+<ol>
+    <li>距离测度：曼哈顿距离、欧式距离、闵氏距离、皮尔逊相似度、余弦相似度。</li>
+    <li>物品推荐
+        <ul>
+            <li>协同过滤（Collaborative Filtering）：将评分正规化，可以把预测出的分数，转化为用户对物品感兴趣的可能性。这种过滤方式对新加入的物品不太友好，因为协同过滤的基础是用户对物品的评价。
+                <ul>
+                    <li>基于用户的协同过滤（User-based Filtering）：算出用户间的相似度，然后根据相似用户对物品的评价，算出目标用户对物品的可能评价。</li>
+                    <li>基于物品的协同过滤（Item-based Filtering）：
+                        <ol type="i">
+                            <li>算出物品间的相似度，然后根据用户对其他物品的评价，加权平均算出对物品的可能评价。</li>
+                            <li>Weighted Slope-One算法，算出物品间评分的差异值，从用户评价过的物品出发，加权平均算出用户对物品的可能评价。优点：物品间的评分差异可以增量计算。</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+            <li>基于物品特征的过滤（Content-based Filtering）：这种过滤能克服协同过滤的“流行偏见(popular bias)”。
+                <ul>
+                    <li>首先要解决的是属性表示的问题。对于离散变量，可以用add-one方法对特征向量进行增维处理。对连续变量，如果数值范围很大，那就需要进行正规化处理（Normalization/Standardization），用到如，StandardScore或Modified Standard Score.</li>
+                    <li>距离测度：可以将几种常规的测度放到n维加以计算。</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>分类
+        <ul>
+            <li>Lazy learner：最近临分类器/n近邻分类器。</li>
+            <li>Eager learner：贝叶斯分类器。对于连续变量的处理，可以划分数值范围或用高斯分布概率密度。</li>
+            <li>分类器效果衡量：如，Kappa Statistic</li>
+        </ul>
+    </li>
+    <li>聚类
+        <ul>
+            <li>两类聚类方法：KNN/KNN++ 或 层次型聚类（Hierarchy clustering）。</li>
+            <li>聚类簇之间距离的选取策略：Single-linkage, Complete-linkage以及Average-linkage。</li>
+            <li>聚类效果衡量：SSE，即各点到其聚类中心的距离平方和。</li>
+        </ul>
+    </li>
+</ol>
+</p>

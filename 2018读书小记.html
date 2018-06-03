@@ -10,10 +10,13 @@
 <p><a href="https://book.douban.com/subject/1400656/" target="_blank" style="background-color: transparent;">《Head First Design Patterns》</a></p>
 <p>这本书在ThoughtWorks的<a href="https://www.tanyixiong.com/assets/ThoughtWorksReadingRadar.jpg" target="_blank" style="background-color: transparent;">读书雷达</a>中处于最核心的位置。之前总担心因为它是Head First系列的，所以会不会内容太肤浅，但读过之后觉得非常惊喜。我甚至觉得，有了一定编码经验的人看这本书，反而会收获更大。</p>
 <p>它不像其他关于设计模式的书籍，直接把经典的设计模式填鸭式地塞给读者。而是以模拟情景为基础，循序渐进的引导读者建立起设计模式思维，同时给出经典模式解决相应问题时的好处。它在介绍模式的同时，还强调OO设计的基本原则，可以说是授人以渔。</p>
-<p>这里简要列出经典模式的分类，以供记忆。</p>
-<p>创建型：Singleton, Builder, Prototype, Abstract Factory, Factory Method
-<br/>行为型：Template Method, Visitor, Mediator, Iterator, Command, Memento, Interpreter, Observer, Chain of Responsibility, State, Strategy
-<br/>结构型：Decorator, Proxy, Composite, Facade, Flyweight, Bridge, Adapter</p>
+<p>这里简要列出经典模式的分类，以供记忆：
+<ol>
+  <li>创建型：Singleton, Builder, Prototype, Abstract Factory, Factory Method</li>
+  <li>行为型：Template Method, Visitor, Mediator, Iterator, Command, Memento, Interpreter, Observer, Chain of Responsibility, State, Strategy</li>
+  <li>结构型：Decorator, Proxy, Composite, Facade, Flyweight, Bridge, Adapter</li>
+</ol>
+</p>
 <p><br></p>
 <p><a href="https://book.douban.com/subject/1433583/" target="_blank" style="background-color: transparent;">《Java NIO》</a></p>
 <p>对于后端应用，特别是服务应用来说，IO部分永远是最需要谨慎处理的，因为它直接关系到应用的相应速度和吞吐量。而对于Java程序员来说，NIO就成了一项必备技能。</p>
@@ -24,13 +27,13 @@
 <p><a href="https://book.douban.com/subject/24700704/" target="_blank" style="background-color: transparent;">《Netty in Action》</a></p>
 <p>讲到Java NIO相关的框架，Netty是绝对绕不开的。Netty在Java NIO的基础上实现了异步的事件驱动处理。</p>
 <p>Netty大致的结构如下：Bootstrap -> EventGroup(parent, child) -> EventLoop -> Channel -> ChannelPipeline -> ChannelHandlerContext -> ChannelHandler</p>
-<p>其中最有意思的是以下两个部分
-<br/>1）基于EventGroup和EventLoop实现的Reactor线程模型（可以根据配置实现单线程、多线程和主从线程模式）
-EventGroup可以类比为线程池，它把任务分配给EventLoop。Parent EventGroup用来接受连接，Child EventGroup用来对已接受的连接进行读写；
-EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可以用来异步执行任务。一个EventGroup包含多个EventLoop，一个EventLoop可以处理多个Channe。
-所以Netty高效的原因不仅在于IO复用，还在于多线程的使用和线程复用。
-<br/>2）基于ChannelPipeline和ChannelHandler实现的数据分层处理。对网络数据进行管道式的处理，有效降低了处理不同协议的复杂度。例如，我们要实现HTTPS传输时，只需要按顺序向管道里添加TLS对应的Handler和HTTP对应的Handler，然后HTTPS的握手过程就可以顺利完成；再如，我们要实现WebScoket传输时，只需要先添加HTTP Handler和WebSocket Handler，收到WebSocket握手后，把HTTP Handler从管道中移除，即可实现传输协议的动态变化。
-补充：阻塞非阻塞是对调用者而言，同步异步是对IO操作而言。Reactor模式是非阻塞同步，Proactor模式是非阻塞异步。</p>
+<p>其中最有意思的是以下两个部分：
+<ol>
+  <li>基于EventGroup和EventLoop实现的Reactor线程模型（可以根据配置实现单线程、多线程和主从线程模式）EventGroup可以类比为线程池，它把任务分配给EventLoop。Parent EventGroup用来接受连接，Child EventGroup用来对已接受的连接进行读写；EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可以用来异步执行任务。一个EventGroup包含多个EventLoop，一个EventLoop可以处理多个Channe。所以Netty高效的原因不仅在于IO复用，还在于多线程的使用和线程复用。</li>
+  <li>基于ChannelPipeline和ChannelHandler实现的数据分层处理。对网络数据进行管道式的处理，有效降低了处理不同协议的复杂度。例如，我们要实现HTTPS传输时，只需要按顺序向管道里添加TLS对应的Handler和HTTP对应的Handler，然后HTTPS的握手过程就可以顺利完成；再如，我们要实现WebScoket传输时，只需要先添加HTTP Handler和WebSocket Handler，收到WebSocket握手后，把HTTP Handler从管道中移除，即可实现传输协议的动态变化。
+      <br/>（补充：阻塞非阻塞是对调用者而言，同步异步是对IO操作而言。Reactor模式是非阻塞同步，Proactor模式是非阻塞异步。）</li>
+</ol>
+</p>
 <p><br></p>
 <p><a href="https://book.douban.com/subject/24830009/" target="_blank" style="background-color: transparent;">《Java Persistence with Hibernate》</a></p>
 <p>这本书非常有助于厘清JPA和Hibernate的关系、以及了解Hibernate的核心功能。</p>
@@ -38,21 +41,26 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 <p>如果我们只需要使用JPA提供的接口，我们可以将Hibernate配置到Persistence Unit中，然后用EntityManagerFactory直接取得EntityManager做数据操作。这里的EntityManager实例将会是Hibernate中的Session对象，但这对我们的代码是透明的。理论上我们可以使用其他的JPA provider而不需要修改程序代码。</p>
 <p>在JPA规范之外，Hibernate还通过它特有的接口提供了额外的配置选项和数据操作方法。所以在实际项目中，我们最终难免对JPA prodiver的特殊接口形成依赖。</p>
 <p>要了解一个工具，最好的办法是看它要解决什么问题，或者想一想，没有它会怎样。Hibernate作为一个ORM框架，要解决的核心问题就是对象到关系的映射。之所以需要这样的映射，是因为在JVM中，结构化数据的存储主要是靠对象，而在关系型数据库中，数据的存储主要是靠表和行。这两者之间有几个最主要的区别:
-<br/>1）Java对象的粒度更丰富，我们可以自定义对象；而关系型数据库通常只支持关系和默认数据类型；
-<br/>2）Java对象支持继承和多态；关系型数据库中很难直接支持；
-<br/>3）Java对象有引用比较和值；关系型数据库中通常是主键比较；
-<br/>4）Java对象之间有一对多、多对一和多对多的关联关系；关系型数据库中只有主外建关联；
-<br/>5）Java用引用访问对象，可以遍历或随机访问；关系型数据库只能按条件查询。</p>
-<p>为了解决这几个问题，Hibernate提供了
-<br/>1）Entity type（有独立的生命周期）和Value Type（没有独立的生命周期，如@Embedded和@Enumerated）；
-<br/>2）多种继承映射策略（@MappedSupperClass，@Inheritance）：一个具体子类一张表、所有类共用一张表、每个父子类一张表；
-<br/>3）两种集合：@ElementCollection用于embedded type集合，@ManyToOne和@OneToMany用于entity type集合；
-<br/>4）数据状态管理：Transient state/Persistent state/Removed state/Detached state；
-<br/>5）Fetch plan：Lazy/Eager；Fetch strategy：BatchSize/Subselect/Select；
-<br/>6）两级缓存：Persistence context/Shared cache；
-<br/>7）两种并发控制：乐观（给Entity添加版本控制）、悲观（读写锁）；
-<br/>8）四种事务级别：Read uncommitted/Read committed/Repeatable read/Serialization；
-<br/>总结来说，我们需要关心的，是如何有效地用对象方式访问和存储数据。我们不是要摒弃SQL而是要高效地生成合理的SQL。从而避免n-select、笛卡尔积等问题。
+<ol>
+    <li>Java对象的粒度更丰富，我们可以自定义对象；而关系型数据库通常只支持关系和默认数据类型；</li>
+    <li>Java对象支持继承和多态；关系型数据库中很难直接支持；</li>
+    <li>Java对象有引用比较和值；关系型数据库中通常是主键比较；</li>
+    <li>Java对象之间有一对多、多对一和多对多的关联关系；关系型数据库中只有主外建关联；</li>
+    <li>Java用引用访问对象，可以遍历或随机访问；关系型数据库只能按条件查询。</li>
+</ol>
+</p>
+<p>为了解决这几个问题，Hibernate提供了：
+<ol>
+    <li>Entity type（有独立的生命周期）和Value Type（没有独立的生命周期，如@Embedded和@Enumerated）；</li>
+    <li>多种继承映射策略（@MappedSupperClass，@Inheritance）：一个具体子类一张表、所有类共用一张表、每个父子类一张表；</li>
+    <li>两种集合：@ElementCollection用于embedded type集合，@ManyToOne和@OneToMany用于entity type集合；</li>
+    <li>数据状态管理：Transient state/Persistent state/Removed state/Detached state；</li>
+    <li>Fetch plan：Lazy/Eager；Fetch strategy：BatchSize/Subselect/Select；</li>
+    <li>两级缓存：Persistence context/Shared cache；</li>
+    <li>两种并发控制：乐观（给Entity添加版本控制）、悲观（读写锁）；</li>
+    <li>四种事务级别：Read uncommitted/Read committed/Repeatable read/Serialization；</li>
+</ol>
+总结来说，我们需要关心的，是如何有效地用对象方式访问和存储数据。我们不是要摒弃SQL而是要高效地生成合理的SQL。从而避免n-select、笛卡尔积等问题。
 </p>
 <p><br></p>
 <p><a href="https://book.douban.com/subject/1830350/" target="_blank" style="background-color: transparent;">《Java Message Service》</a></p>
@@ -61,9 +69,11 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 <br/>其中Session是事务控制的单位，而在JDBC中，Connection是事务控制的单位。所以对JMS可以用session pool，对JDBC可以用connection pool.
 </p>
 <p>JSM支持两种消息模式：
-<br/>1）One to one. 基于Queue, 有Sync和Async两种；
-<br/>2）One to many. 基于Topic, 有Durable和Non-Durable两种。
-<br/>对于这两种模式的消息，都可以指定Persistent或Non-Persistent。消息本身有三个部分：Header, Properties(message selector就是针对它), Payload(不同的消息类型，差别就在于它)。
+<ol>
+    <li>One to one. 基于Queue, 有Sync和Async两种；</li>
+    <li>One to many. 基于Topic, 有Durable和Non-Durable两种。</li>
+</ol>
+对于这两种模式的消息，都可以指定Persistent或Non-Persistent。消息本身有三个部分：Header, Properties(message selector就是针对它), Payload(不同的消息类型，差别就在于它)。
 </p>
 <p>对于消息收发，我们重点需要注意的是存储转发机制。即消息在JMS服务器上会驻留多久、它是被存在内存还是硬盘。这跟我们选择的消息模式有关。对消息收发的性能和吞吐量会造成影响。</p>
 <p><br></p>
@@ -77,3 +87,32 @@ EventLoop包含一个Java线程，且实现了ExecutorService接口，所以可�
 <p>并发编程一直是颇具挑战性的问题，在读这本书之前，我觉得里面的内容一定很晦涩难懂。但出乎意料的是，这本书读起来趣味性很强，深入浅出的介绍了并发编程中可能遇到的问题，和相应的思考方式。</p>
 <p>操作的原子性、排他性和可见性，是进行并发编程时需要考虑的三要素。根据这三要素，可以选择用volatile、同步关键字、ReentrantLock、原子操作类、调度器、条件队列、线程池等手段，来解决并发问题。</p>
 <p>另一个非常重要的启示，是让我重新认识了生产者-消费者模式。在Java的并发类、Netty和Tomcat的IO调度类中，随处可见“队列”的身影，而通常见到队列，就可以联想到生产者-消费者模式。“队列”就像是一个变速箱，让处理速度不同的两个并发单元，能同时运行，从而达到最大化利用系统资源、提高程序响应速度和吞吐量的目的。这个思路可以用来帮助理解很多涉及任务调用和并发任务处理的模块。</p>
+<p><br></p>
+<p><strong>2018年5月</strong></p>
+<p><a href="https://book.douban.com/subject/10597898/" target="_blank" style="background-color: transparent;">《Redis in Action》</a></p>
+<p>之前只是知道Redis可以用作后台缓存，但对于它的结构、特性和用法都不熟悉。这本书主要是从Redis特性入手，通过示例来展示Redis的用法和结构，主要精华集中在前4章。</p>
+<p>开发者对Redis的定义是：内存非关系型数据库。说白了，就是键值对存储。而Redis的优势在于，对于值，它原生支持五种数据类型：String/List/Hash/Set/ZSet。有了这五种数据类型以及相应的原生操作，我们就可以实现很多灵活的存储逻辑。如，将对象存储为Hash、将带权数据存储为ZSet。</p>
+<p>Redis主要有四个特点：
+<ol>
+  <li>In-Memory：数据的读写都是直接针对内存进行，这是它实现高性能的基础；</li>
+  <li>Remote：Redis实例是独立运行的程序，通过网络请求的方式为其他程序提供数据服务；</li>
+  <li>Persistent：Redis是内存数据库，但它也有自己的持久化机制（Snapshot/Append-Only-File），这主要是为了避免服务器宕机之后的数据丢失，同时也能帮助我们在Redis集群中进行数据同步。</li>
+  <li>Scalable：Redis可以根据需要，做水平拓展。即，通过一个Redis集群，提高数据服务的性能和可用性。Redis默认支持的是最简单的主从分布式架构，一个集群只有一个主节点，由它来接受写请求；其他子节点从主节点同步数据，接受读请求。这样的好处是，结构简单、便于保持数据一致性、而且满足缓存读多写少的普遍特点。</li>
+</ol>
+</p>
+<p><br></p>
+<p><a href="http://book.mixu.net/distsys/single-page.html" target="_blank" style="background-color: transparent;">《Distributed systems for fun and profit》</a></p>
+<p>这是一本关于分布式系统的网络书，篇幅不长，但涵盖了分布式系统需要考虑的几个最基础问题：
+    <ol>
+        <li>
+            系统模型。这是对系统的合理抽象，将我们希望得到的系统特性借由一定的模型来实现。
+            <ul>
+                <li>节点：这是分布式系统中的每台机器，可以进行运算和存储；</li>
+                <li>连接：这是节点间进行通信的机制，一般是网络连接。关键要对网络的延迟和失效进行预判和处理。连接延迟可能带来重复请求和数据，连接失效可能造成Partition，这可能会造成数据不一致；</li>
+                <li>时间和顺序：全局时间/本地时间/无时间/全局顺序/本地顺序/无顺序。这里主要考虑是采用同步或异步模型。还有如何对节点和请求的有效性进行合理的判断，因为一般都是基于heartbeat间隔和请求执行的时长来判断。</li>
+            </ul>
+        </li>
+        <li>一致性问题。这主要是指节点间如何达成共识，实现集群自治。以及数据如何进行复制和同步：同步复制/异步复制，强一致/最终一致。</li>
+        <li>FLP理论和CAP理论。这是关于分布式系统局限性的定理，是系统设计时的重要参考，可以帮助我们在不同特性之间进行调整和取舍。FLP是指，在异步通信的情况下，不存在完美的一致性算法。CAP是指，分布式系统无法同时完全满足一致性、可用性和节点失效容错性。这三者之间不是零和关系，而更像是比例或程度关系，我们需要根据具体应用场景决定合适的特性需求，再进行模型设计。</li>
+    </ol>
+</p>
