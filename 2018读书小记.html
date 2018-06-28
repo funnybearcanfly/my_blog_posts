@@ -116,3 +116,98 @@
         <li>FLP理论和CAP理论。这是关于分布式系统局限性的定理，是系统设计时的重要参考，可以帮助我们在不同特性之间进行调整和取舍。FLP是指，在异步通信的情况下，不存在完美的一致性算法。CAP是指，分布式系统无法同时完全满足一致性、可用性和节点失效容错性。这三者之间不是零和关系，而更像是比例或程度关系，我们需要根据具体应用场景决定合适的特性需求，再进行模型设计。</li>
     </ol>
 </p>
+<p><br></p>
+<p><strong>2018年6月</strong></p>
+<p><a href="https://book.douban.com/subject/27609265/" target="_blank" style="background-color: transparent;">《Kafka: The Definitive Guide》</a></p>
+<p>“流”是非常重要的一个编程理念。小到对数据集合的处理（如，Java中的Stream接口）；中到UI中对事件的响应式处理（如，Reactive）；大到应用间的异步通信（如，Kafka），都突出了“流”的概念。而Kafka无疑是这些应用中规模最大，应用场景最复杂的一个。</p>
+<p>Kafka是分布式流处理平台，它和传统消息系统的区别主要有三点：
+<ol>
+  <li>它是分布式的，可以提供企业级别的可扩展的数据流。</li>
+  <li>它是一个真正的存储系统，数据可以按任意时限保存。</li>
+  <li>数据流是高于消息的抽象，支持更多样化的操作。</li>
+</ol>
+另一种看法是把Kafka看成实时版的Hadoop，由此可以窥见Kafka的分布式特性和存储特性。
+</p>
+<p>通过观察Kafka的结构，我们可以对分布式系统的实现方式进行反向的推理和提炼。我认为，可以从以下几个方面对Kafka的分布式特性进行总结：
+<ol>
+  <li>消息发送和存储：关键是对Topic进行多个Partition的分割，由于Partition可以分布在多个节点上，所以可以实现写和存储的横向拓展。这里要注意消息的分配规则，以保证Partition之间的负载均衡；</li>
+  <li>消息的冗余：这是对Partition做replica操作，将数据从主节点向从节点进行复制。这是分布式应用中常见的容错机制，而提到复制，就要想到数据的同步策略、节点的恢复等问题；</li>
+  <li>消息的读取：消息的源头已经支持横向拓展了，消息的读取也可以。这是通过consumer group来实现的。即一条消息只会被一个group读取一次。我们可以通过增加读取节点的数量，来实现读取性能的拓展。而这又牵扯出读取节点和partition之间的数量关系，以及读取过程中因节点加入或退出造成的rebalance过程。</li>
+</ol>
+由此可以看出，Kafka其实就是一个分布式的数据存储、转发应用。Kafka用到Zookeeper做节点的协调管理。其他一些优化则进一步保证了它的性能。如：数据发送时的zero-copy，数据存储时的log-segment，处理网络请求时reactor线程模型的应用（想到Netty），等。
+</p>
+<p><br></p>
+<p><a href="https://book.douban.com/subject/27005082/" target="_blank" style="background-color: transparent;">《Spring Microservices in Action》</a></p>
+<p>我认为，微服务作为SOA的进化产物，也是天然继承了分布式应用的基因，才得以具备它独特的性质和优势。微服务是一种理念和结构，而Spring Cloud就是它的一个实现。</p>
+<p>这本书的优点在于，作者将微服务的设计理念和模式和Spring Cloud中的实现有机结合起来，形成了逻辑上的闭环，方便理解。全书的精华可以浓缩于一个从模式到实现的列表：
+<ol>
+  <li>Development Patterns
+      <ul>
+          <li>Core Microservice Patterns: Spring Boot
+              <br>Spring Boot不是Spring Cloud中的子项目。但它从开发角度对于Rest API有优良支持；从运行和部署角度具有独立性，和Docker之类的容器天然吻合。所以它被作为搭建Spring Cloud项目的基础框架。
+          </li>
+          <li>Configuration Management: Spring Cloud Config
+              <br>这里牵扯出Spring Cloud的云特性，即节点的数量、IP、端口都会是动态变化的。因为在微服务架构中，一般会选用云提供商的容器服务，来进行部署。这一特性是后续几乎所有子项目的设计前提。反映在配置这一环节，就是要求有分布式的配置服务来对众多其他服务的配置进行集中管理。这又牵扯出分布式应用中的经典问题：为了防止单点错误，加入多节点，而一旦有了多节点，就要考虑节点间的同步问题。这就是Spring Cloud的实现中提供给我们的便利。
+          </li>
+          <li>Async Messaging: Spring Cloud Stream
+              <br>这和之前读的Kafka对应上了，因为Spring Cloud Stream默认支持Kafka和RabbitMQ。它对不同的消息平台进行了封装，提供了一致的消息驱动接口。
+          </li>
+      </ul>
+  </li>
+  <li>Routing Patterns
+      <ul>
+          <li>Service Discovery Patterns: Eureka
+              <br>云的动态特性，要求我们能集中地进行服务注册和发现。同样，Eureka也可以是多节点的集群。
+          </li>
+          <li>Service Routing Patterns: Zuul
+              <br>这其实就是一个反向代理。它的核心是filter，它的作用是充当PEP（Policy Enforcement Point）。
+          </li>
+      </ul>
+  </li>
+  <li>Client Resiliency Patterns
+      <ul>
+          <li>Client-side Load Balance: Ribbon
+              <br>这里有一点非常有趣，即在Spring Cloud中，客户端负载均衡和服务器端负载均衡其实是没有严格界限的。当Ribbon被服务调用端直接用来调用服务时，它是客户端负载均衡；当Ribbon被用在Zuul服务时，它对于Zuul本身来说是客户端负载均衡，对于调用Zuul服务的服务来说，它就是服务端负载均衡。
+          </li>
+          <li>Circuit Breaker Patterns: Hystrix
+              <br>熔断模式是防止性能不佳的服务拖垮整个服务调用链。Hystrix是在服务调用端使用的，涉及时间窗口和性能阈值等参数的设置。
+          </li>
+          <li>Fallback Patterns: Hystrix
+              <br>这是要为失败的服务调用提供备用方案。
+          </li>
+          <li>Bulkhead Patterns: Hystrix
+              <br>这是为了避免当某一服务性能不佳时，调用方的资源被指向该服务的调用所耗尽，导致响应问题。Hystrix的实现是将不同调用按配置划分到不同的线程池中执行，实现线程层面的资源隔离。
+          </li>
+      </ul>
+  </li>
+  <li>Build Deployment Patterns
+      <ul>
+          <li>CI: Travis CI
+          </li>
+          <li>Infrastructure as Code: Docker
+              <br>“设施代码化”，这个概念非常形象，甚至可以直通容器的本质，即完整隔离的、可重复的运行环境。
+          </li>
+          <li>Immutable Servers: Docker
+          </li>
+          <li>Phoenix Servers: Travis CI + Docker
+          </li>
+      </ul>
+  </li>
+  <li>Logging Patterns
+      <ul>
+          <li>Log Correlation/Aggregation: Spring Cloud Sleuth
+              <br>添加统一的日志规则和内容，如correlation id。并进行发送。
+          </li>
+          <li>Microservice Tracing: Zipkin
+              <br>本质上就是根据汇总来的log，对分布式事务进行可视化展示。
+          </li>
+      </ul>
+  </li>
+  <li>Security Patterns
+      <ul>
+          <li>Authorization/Authentication: OAuth2
+              <br>提供分布式的认证授权服务。将Token在服务调用链中传递，来简化身份和权限的校验。
+          </li>
+      </ul>
+  </li>
+</ol>
