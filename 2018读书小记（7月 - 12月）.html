@@ -1,0 +1,87 @@
+<p><strong>2018年7月</strong></p>
+<p><a href="https://github.com/ethereumbook/ethereumbook" target="_blank" style="background-color: transparent;">《Mastering Ethereum》</a></p>
+<p>区块链技术不是单一的技术创新，而是对加密技术、P2P网络和一致性算法地创造性整合。区块链脱胎于比特币，或者说比特币和其他的数字货币是区块链技术的最成功应用。</p>
+<p>不同区块链应用之间的主要差别，就在于它们区块中存的是什么。对于数字货币来说，区块中存的是一条条转账记录。这些记录是静态的、只读的。而Ethereum，它的区块中除了存储转账记录，还存储可用于执行的程序脚本。这种脚本就是<b>Smart Contract</b>。Ethereum网络中的全职节点，像其他区块链应用中的全职节点一样，负责用挖矿的方式将区块入链。所以Ethereum也有自己的货币--Ether.在入链的同时，全职节点还会执行区块中的脚本，并获得相应量的Ether作为报酬。脚本的执行是在Ethereum虚拟机上完成的。由此我们终于可以理解，为什么说Ethereum的开发目的是为去中心化应用提供基础。</p>
+<p>去中心化(Decentralized)和分布式(Distributed)有很大区别：
+    <ul>
+       <li>从算力的所属来看，去中心化的算力是由网络参与者自发提供的，没有统一归属；分布式的算力是由某个组织或公司提供的。</li>
+       <li>从解决的问题上看，去中心化解决的是应用和数据所有权的大众化、去中心化；分布式解决的是单机性能瓶颈问题，通过算力的横向拓展来提高系统响应或吞吐量。</li>
+       <li>从性能来看，去中心化程序的性能只是分布式程序的百万分之一，无法直接在链上执行计算密集型或数据密集型的任务。Ethereum提供了Oracle contract来将计算或存储成本高的任务转移至链外执行(off-chain)。</li>
+    </ul>
+</p>
+<p>从系统结构上看，各种区块链技术都由相似的几个部分组成。对于Ethereum，它的大体对应关系如下：
+    <ul>
+       <li>P2P Network - Ethereum Main Network</li>
+       <li>Consensus Rules</li>
+       <li>Transactions - Network Messages</li>
+       <li>State Machine - Ethereum Virtual Machine(EVM)</li>
+       <li>Blockchain - Google's LevelDB, Merkle Patrica Tree</li>
+       <li>Consensus Algorithm - Ethash(Proof of Work), Casper(Proof of Stake)</li>
+       <li>Clients - GoEthereum, Parity</li>
+    </ul>
+</p>
+<p>最后特别值得注意的是，ICO(Initial Coin Offering)其实并不是真的发行对应的数字货币。因为一种区块链实例，只对应一种数字货币。ICO其实是用Smart Contract在Ethereum链上发行token。即在这个Smart Contract中，设定总的token数量，并存储token的归属权。说白了，就是一个字典数据。这就解释了为什么ICO种类那么多，因为它的发行成本非常低。而从价值上讲，ICO发行的token不过是发行者凭空添加的数值变量，不像链上的原始货币具有算力价值。所以ICO其实是一种众筹方式，而非有价货币的发行。ICO token的价值来源于与它相关的去中心化程序的价值。由此可以看出，目前大部分的ICO token可能只是一种危险的投机品。因为目前来看，真正成功商业化的去中心化应用可谓屈指可数。</p>
+<p><br></p>
+<p><a href="https://www.jamiiforums.com/attachments/forex-for-beginners-pdf.543708/" target="_blank" style="background-color: transparent;">《Forex Trading for Beginners》</a></p>
+<p>因为项目需要，开始了解外汇交易的基础知识。书的前50%还是挺亲民的，后面讲到具体交易策略，就有点抽象了。但大体算是对外汇交易有了个101的认识吧。同时也发现，对于任何类型的金融交易，都可以用基础分析和趋势分析两种方式进行价格预测。对于外汇交易来说，基础分析更多是关于宏观经济的考量。对股票交易来说，基础分析更多是关于微观上公司的价值考量。</p>
+<p><br></p>
+<p><strong>2018年8月</strong></p>
+<p><a href="https://book.douban.com/subject/26934613/" target="_blank" style="background-color: transparent;">《Mockito Cookbook》</a></p>
+<p>刚到新公司，实在没有时间看大部头。正好新项目上的单元测试mock工具是用Mockito，所以就找来这本书系统地学习一下Mockito。</p>
+<p>总结来说，mock工具的功能其实都不复杂。理解mock + spy + stub + answer + argument capturer + verify就能玩转大部分mock工具。
+    <ul>
+       <li>mock - 无功能实现的空对象，可以替换函数</li>
+       <li>spy - 针对实例的mock包装，可以替换函数或使用原函数</li>
+       <li>stub - 替换函数的返回值</li>
+       <li>answer - 替换函数的执行方法</li>
+       <li>argument capture - 抓取函数参数，对传入值进行测试</li>
+       <li>verify - 校验函数的执行行为，次数、顺序等</li>
+    </ul>
+    其他的类或接口都可以理解为对上述功能的组合或简化。
+</p>
+<p><br></p>
+<p><strong>2018年9月</strong></p>
+<p><a href="https://book.douban.com/subject/1418618/" target="_blank" style="background-color: transparent;">《Domain-Driven Design》</a></p>
+<p>前半部分还挺让人耳目一新的。针对一个问题的设计方案有无数种可能，很多的设计书籍都是从技术或者架构的角度来提出指导系统设计的方针。这本书提出从要解决的领域问题出发，把领域模型作为分析和设计的核心。我认为，这其实是从宏观上对软件本身的语义做了规范。即：微观来看，我们遵循clean code的原则，让方法和类在语义上尽量清晰地表达它所承载的职责；宏观来看，我们保持从领域模型到系统模型的连续性，用领域语言和软件设计语言来清晰地描述问题。归根到底，软件设计和开发就变为怎么准确表达问题的学问。让人看懂，确保设计和代码层面的信息准确性和密度，是万变不离其宗的最高原则。</p>
+<p>但这种方法论一类的知识，要实际运用就显得比较难了。需要大量实践才能形成本能式的反应。所谓“手艺”就体现在这儿了吧。</p>
+<p><br></p>
+<p><strong>2018年10月</strong></p>
+<p><a href="https://book.douban.com/subject/10586741/" target="_blank" style="background-color: transparent;">《关键对话》</a></p>
+<p>短小的工具书，主题还是挺明确、挺有趣的。教人如何辨别、并处理好高风险对话。</p>
+<p>最重要的两点收获：
+    <ul>
+       <li>战斗或者逃跑，是人类的本能。但这两种选择不一定是唯一的、最好的选择，特别是在进行高风险对话的时候。这点很有启发性。这不光可以应用于工作场景，也可以用于生活场景。比如，家人之间的争吵和冷战，就对应这两种极端选择。所以，今后发现自己处于想战或者想逃的应激状态时，就会问自己，是不是还有第三种选择？</li>
+       <li>在困难情境中，问自己几个问题：我是谁？我想要什么？为了获得想要的，需要什么？如何让别人帮我得到想要的？这和第一点互相影响。在困难时，想起其中任何一点，都能帮助我们进入解决问题的正向循环。</li>
+    </ul>
+</p>
+<p><br></p>
+<p><strong>2018年11月</strong></p>
+<p><a href="https://book.douban.com/subject/26197294/" target="_blank" style="background-color: transparent;">《Designing Data-Intensive Applications》</a></p>
+<p>下半年最喜欢的一本。涵盖数据存储、处理系统各个方面的百科全书式工程指南。</p>
+<p>最可贵的是，它并不是机械的介绍现有的数据库或数据存储工具，而是从头介绍了数据存储、处理相关的各种问题，并引出和比较不同的解决方案。真正做到了授人以渔。</p>
+<p>它从几个维度介绍了数据系统：
+    <ul>
+       <li>存储方式：Table（传统DB），Document，Graph</li>
+       <li>索引方式：SSTable（LSM-Tree），B Tree，B+ Tree</li>
+       <li>应用方式：OLTP，OLAP</li>
+       <li>序列化方式：Text（XML/JSON），Binary（ProtoBuf/Thrift/Avro）</li>
+       <li>事物隔离层级：Read Committed，Repeatable Read/Snapshot Isolation，Serializability（单线程，2PL，SSI）</li>
+       <li>运行方式：单机，分布式
+           <p>其中，对于分布式数据系统：
+               <ul>
+                   <li>主从模式（Replication）：单主，多主，无主</li>
+                   <li>同步模式：同步，异步，半同步</li>
+                   <li>一致性：Eventual，Read-your-writes，Cross-device，Monotonic，Consistent-prefix-read</li>
+                   <li>分区方式（Partition）：键值范围，键值哈希，复合主键</li>
+                   <li>负载调整方式（Rebalance）：Fixed number of partitions，Dynamic Partitioning</li>
+                   <li>请求路由方式：统一调度（如，Zookeeper），Gossip</li>
+                   <li>系统全局时间建模方式：同步（假设延迟始终在一定范围内），部分同步，异步</li>
+                   <li>节点失效建模方式：Crash-Stop，Crash-Recovery，Byzantine</li>
+                   <li>数据处理方式：Batch Processing（如，MapReduce），Stream Processing</li>
+               </ul>
+            </p>
+       </li>
+    </ul>
+</p>
+<p>现在主流的各种数据系统（传统DB，NoSQL，大数据），都可以按上述特点进行分类。由此，我们就可以判断出各种数据系统的性能特性，根据实际需求进行选择。</p>
+<p>最重要的一点原则就是：没有一劳永逸的完美数据系统。我们在选择不同方案时，都是在针对特定应用做“最优取舍”。这种取舍的思想，是所有计算机系统的共有常识。坚持这种常识就能自主做出一些合理推断。</p>
