@@ -1,0 +1,46 @@
+db.collection.aggregate([
+  {
+    "$replaceRoot": {
+      "newRoot": {
+        "$arrayToObject": [
+          {
+            "$concatArrays": [
+              {
+                "$map": {
+                  "input": {
+                    $literal: [
+                      ""
+                    ]
+                  },
+                  "in": {
+                    k: "windId",
+                    v: "$$ROOT.windId"
+                  }
+                }
+              },
+              {
+                "$map": {
+                  "input": {
+                    $literal: [
+                      ""
+                    ]
+                  },
+                  "in": {
+                    k: "$$ROOT.tradeDate",
+                    v: "$$ROOT.closePrice"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "$group": {
+      "_id": null,
+      "count": {
+        "$count": {}
+      }
+    }
+  }
+])
